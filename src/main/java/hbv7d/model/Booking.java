@@ -3,15 +3,15 @@ package hbv7d.model;
 
 public class Booking {
     private int bookingID;
-    private Tour tour;
-    private User user;
+    private int tourID;
+    private int userID;
     private BookingStatus status;
 
 
     
-    public Booking(User user, Tour tour) {
-        this.user = user;
-        this.tour = tour;
+    public Booking(int userID, int tourID) {
+        this.userID = userID;
+        this.tourID = tourID;
         this.status = BookingStatus.PENDING;
     }
 
@@ -35,20 +35,20 @@ public class Booking {
         return status;
     }
 
-    public Tour getTour() {
-        return tour;
+    public int getTour() {
+        return tourID;
     }
 
-    public void setTour(Tour tour) {
-        this.tour = tour;
+    public void setTour(int tourID) {
+        this.tourID = tourID;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userID;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userID) {
+        this.userID = userID;
     }
 
     public int getBookingID() {

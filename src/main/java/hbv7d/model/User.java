@@ -8,6 +8,10 @@ public class User {
     private String email;
     private List<Booking> bookings;
 
+    // Constructor no args
+    public User(){
+
+    }
 
     // Constructor
     public User(int userId, String name, String email) {
@@ -19,6 +23,10 @@ public class User {
     // GETTERS & SETTERS
     public int getUserId() {
         return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getName() {
