@@ -103,7 +103,7 @@ public class TourRepository {
 
     public Tour findById(int tourId) {
         Tour tour = null;
-        String sql = "SELECT tourId, name, description, location, price, date, duration, groupSize, difficultyRating, type, pickupService, hostId "
+        String sql = "SELECT tourId, name, description, location, price, date, duration, groupSize, difficultyRating, type, pickupService, companyId "
                    + "FROM Tour WHERE tourId = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

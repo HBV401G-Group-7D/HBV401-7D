@@ -16,9 +16,10 @@ public class UserController {
 
     }
 
-    public UserController(UserRepository userRepository, TourRepository tourRepository) {
+    public UserController(UserRepository userRepository, TourRepository tourRepository, BookingRepository bookingRepository) {
         this.userRepository = userRepository;
         this.tourRepository = tourRepository;
+        this.bookingRepository = bookingRepository;
         
     }
     
@@ -49,7 +50,7 @@ public boolean makeBooking(int userId, int tourId) {
             return false;
         }
         
-        Tour tour = tourRepository.findById(tourId);  // Assumes TourRepository.findById exists.
+        Tour tour = tourRepository.findById(tourId); 
         if (tour == null) {
             return false;
         }

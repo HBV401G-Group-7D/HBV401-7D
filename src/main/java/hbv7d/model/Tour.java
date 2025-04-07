@@ -1,5 +1,6 @@
 package hbv7d.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class Tour {
         this.type = type;
         this.pickupService = pickupService;
         this.host = host;
+        this.bookings = new ArrayList<>();
     }
 
 
@@ -75,7 +77,9 @@ public class Tour {
     public void setHost(Company host) { this.host = host; }
 
 
-
+    public List<Booking> getBookings() {
+        return bookings;
+    }
 
     // Methods
     public boolean reserveSeat(Booking booking) {
@@ -98,5 +102,6 @@ public class Tour {
         //Ásamt því að búa til functionality fyrir að uppfæra tour
 
     }
+
 
 }
