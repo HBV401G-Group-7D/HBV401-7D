@@ -78,7 +78,7 @@ public class Tour {
 
 
     // Methods
-    private boolean reserveSeat(Booking booking) {
+    public boolean reserveSeat(Booking booking) {
         if (bookings.size() < groupSize){
             bookings.add(booking);
             return true;

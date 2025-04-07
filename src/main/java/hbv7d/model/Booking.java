@@ -5,7 +5,7 @@ public class Booking {
     private int bookingID;
     private int tourID;
     private int userID;
-    private BookingStatus status;
+    public BookingStatus status;
 
 
     
@@ -27,7 +27,7 @@ public class Booking {
         return true;
     }
 
-    private enum BookingStatus {
+    public enum BookingStatus {
         PENDING, CONFIRMED, CANCELLED
     }
 

@@ -1,6 +1,7 @@
 package hbv7d.repository;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -98,6 +99,37 @@ public class TourRepository {
             e.printStackTrace();
         }
         return tours;
+    }
+
+    public Tour findById(int tourId) {
+        Tour tour = null;
+        String sql = "SELECT tourId, name, description, location, price, date, duration, groupSize, difficultyRating, type, pickupService, hostId "
+                   + "FROM Tour WHERE tourId = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, tourId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int id = rs.getInt("tourId");
+                    String name = rs.getString("name");
+                    String description = rs.getString("description");
+                    String location = rs.getString("location");
+                    int price = rs.getInt("price");
+                    // Convert the SQL Date to java.util.Date
+                    Date date = new Date(rs.getDate("date").getTime());
+                    int duration = rs.getInt("duration");
+                    int groupSize = rs.getInt("groupSize");
+                    String difficultyRating = rs.getString("difficultyRating");
+                    String type = rs.getString("type");
+                    boolean pickupService = rs.getBoolean("pickupService");
+                    // For now, we'll leave host as null. You could load it via CompanyRepository if needed.
+                    tour = new Tour(id, name, description, location, price, date, duration, groupSize, difficultyRating, type, pickupService, null);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tour;
     }
 
 
