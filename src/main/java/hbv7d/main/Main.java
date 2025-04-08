@@ -53,6 +53,9 @@ public class Main {
         companyController.addTour(1,tour);
 
 
+        System.out.println(tour.getSeatsTaken());
+
+
 
     }
 }
