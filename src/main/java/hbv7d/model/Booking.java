@@ -16,14 +16,17 @@ public class Booking {
     }
 
     public boolean confirmBooking(){
+        this.status = BookingStatus.CONFIRMED;
         return true;
     }
 
     public boolean cancelBooking(){
+        this.status = BookingStatus.CANCELLED;
         return true;
     }
 
-    public boolean bookingFaild(){
+    public boolean bookingFailed(){
+        this.status = BookingStatus.CANCELLED;
         return true;
     }
 
@@ -33,6 +36,10 @@ public class Booking {
 
     public BookingStatus getStatus() {
         return status;
+    }
+    
+    public void setStatus(BookingStatus status) {
+        this.status = status;
     }
 
     public int getTour() {
