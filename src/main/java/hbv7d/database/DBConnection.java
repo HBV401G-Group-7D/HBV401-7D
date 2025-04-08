@@ -15,7 +15,7 @@ public class DBConnection {
         if (connection == null || connection.isClosed()) {
             try {
                 Class.forName("org.sqlite.JDBC");
-                String filePAbsPath = System.getProperty("user.dir") + "\\" + "DayTours.db";
+                String filePAbsPath = System.getProperty("user.dir") + File.separator + "DayTours.db";
                 connection = DriverManager.getConnection("jdbc:sqlite:" +filePAbsPath);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
