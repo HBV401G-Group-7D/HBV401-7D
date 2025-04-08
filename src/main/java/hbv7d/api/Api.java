@@ -9,6 +9,7 @@ import hbv7d.repository.TourRepository;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 
 //TODO think about if we should split this up in companyapi and user api or just use them for the ui
@@ -18,6 +19,25 @@ public class Api {
     public Api(){
         userController = new UserController();
         start();
+
+        Company company1 = new Company(1, "company1");
+        companyController.createCompany(company1);
+//        Company company1 = companyController.getCompany(1);
+        Tour tour = new Tour(
+                1,
+                "Tour 1",
+                "this is description",
+                "this is a location",
+                20,
+                new Date(),
+                20,
+                32,
+                "this is a difficultyRating",
+                "this is a type",
+                false,
+                company1
+        );
+        companyController.addTour(1,tour);
     }
 
     private void start(){
