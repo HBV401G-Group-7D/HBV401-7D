@@ -150,4 +150,9 @@ public class UserController {
     public List<Booking> viewBookings(int userId) {
         return bookingRepository.findBookingsByUserId(userId);
     }
+
+    public Tour getTourByBookingId(int bookingId){
+        return tourRepository.findById(bookingRepository.findBookingsById(bookingId).getBookingID());
+    }
+
 }

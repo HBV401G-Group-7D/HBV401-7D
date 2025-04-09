@@ -1,5 +1,7 @@
 package hbv7d.model;
 
+import hbv7d.api.Api;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +55,8 @@ public class User {
     public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
     }
-    
+
+
     // METHODS
     public void addBooking(Booking booking) {
         bookings.add(booking);

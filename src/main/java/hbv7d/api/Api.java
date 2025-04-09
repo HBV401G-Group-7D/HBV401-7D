@@ -2,6 +2,7 @@ package hbv7d.api;
 
 import hbv7d.controller.CompanyController;
 import hbv7d.controller.UserController;
+import hbv7d.main.Main;
 import hbv7d.model.Booking;
 import hbv7d.model.Company;
 import hbv7d.model.Tour;
@@ -18,25 +19,64 @@ import java.util.List;
 
 //TODO think about if we should split this up in companyapi and user api or just use them for the ui
 public class Api {
-    public CompanyController companyController;
-    public UserController userController;
+    public static CompanyRepository companyRepository = makeCompanyRepository();
+    public static TourRepository tourRepository = makeTourRepository();
+    public static UserRepository userRepository = makeUserRepository();
+    public static BookingRepository bookingRepository = makeBookingRepository();
 
-    public static CompanyRepository companyRepository;
-    public static TourRepository tourRepository;
-    public static UserRepository userRepository;
-    public static BookingRepository bookingRepository;
+    public static CompanyController companyController;
+    public static UserController userController;
+
 
     public Api(){
+//        Api.makeAll();
+        Api.start();
 
-        start();
+    }
 
+    private static CompanyRepository makeCompanyRepository(){
+        CompanyRepository companyRepository = new CompanyRepository();
+        companyRepository.createCompanyTable();
+        return  companyRepository;
+    }
+    private static TourRepository makeTourRepository(){
+        TourRepository tourRepository = new TourRepository();
+        tourRepository.createTourTable();
+        return tourRepository;
+    }
+    private static UserRepository makeUserRepository(){
+        UserRepository userRepository = new UserRepository();
+        userRepository.createUserTable();
+        return userRepository;
+    }
+    private static BookingRepository makeBookingRepository(){
+        BookingRepository bookingRepository = new BookingRepository();
+        bookingRepository.createBookingTable();
+        return bookingRepository;
+    }
+
+    public static void makeAll(){
+        CompanyRepository companyRepository = new CompanyRepository();
+        TourRepository tourRepository = new TourRepository();
+        UserRepository userRepository = new UserRepository();
+        BookingRepository bookingRepository = new BookingRepository();
+
+        bookingRepository.createBookingTable();
+        companyRepository.createCompanyTable();
+        tourRepository.createTourTable();
+        userRepository.createUserTable();
+
+        Api.companyRepository = companyRepository;
+        Api.tourRepository = tourRepository;
+        Api.userRepository = userRepository;
+        Api.bookingRepository = bookingRepository;
     }
 
 //    public Api(CompanyRepository companyRepositoryIn, TourRepository tourRepositoryIn, UserRepository userRepositoryIn, BookingRepository bookingRepositoryIn){
 //
 //    }
 
-    private void start(){
+    private static void start(){
         companyController = new CompanyController(companyRepository,tourRepository);
         userController = new UserController(userRepository, tourRepository, bookingRepository);
     }
@@ -47,7 +87,7 @@ public class Api {
      * @param company the Company object to be saved
      * @return true if the company was successfully created, false otherwise
      */
-    public boolean createCompany(Company company){
+    public static boolean createCompany(Company company){
         return companyController.createCompany(company);
     }
 
@@ -57,7 +97,7 @@ public class Api {
      * @param companyId the ID of the company to retrieve
      * @return the Company object if found; otherwise, null
      */
-    public Company getCompany(int companyId) {
+    public static Company getCompany(int companyId) {
         return companyController.getCompany(companyId);
     }
 
@@ -67,7 +107,7 @@ public class Api {
      * @param companyId the ID of the company to delete
      * @return true if the company was found and deleted; false otherwise
      */
-    public boolean deleteCompany(int companyId){
+    public static boolean deleteCompany(int companyId){
         return companyController.deleteCompany(companyId);
     }
 
@@ -79,7 +119,7 @@ public class Api {
      * @param tour the Tour object to add
      * @return true if the company exists and the tour is successfully added; false otherwise
      */
-    public boolean addTour(int companyId, Tour tour){
+    public static boolean addTour(int companyId, Tour tour){
         return companyController.addTour(companyId,tour);
     }
 
@@ -89,7 +129,7 @@ public class Api {
      * @param companyId the ID of the company whose tours are to be viewed
      * @return a List of Tour objects; if no tours exist, the list may be empty
      */
-    public List<Tour> viewCompanyTours(int companyId){
+    public static List<Tour> viewCompanyTours(int companyId){
         return companyController.viewCompanyTours(companyId);
     }
 
@@ -98,7 +138,7 @@ public class Api {
      *
      * @return a List of Tour objects representing all available tours.
      */
-    public List<Tour> viewAllATours(){
+    public static List<Tour> viewAllATours(){
         return companyController.viewAllATours();
     }
 
@@ -110,7 +150,7 @@ public class Api {
      * @param user the User object to be saved in the database
      * @return true if the user is successfully saved
      */
-    public boolean createUser(User user) {
+    public static boolean createUser(User user) {
         userController.createUser(user);
         return true;
     }
@@ -121,7 +161,7 @@ public class Api {
      * @param userId the ID of the user
      * @return the User object if found, otherwise null
      */
-    public User getUser(int userId) {
+    public static User getUser(int userId) {
         return userController.getUser(userId);
     }
 
@@ -131,7 +171,7 @@ public class Api {
      * @param userId the ID of the user to delete
      * @return true if the user existed and was deleted, otherwise false
      */
-    public boolean deleteUser(int userId) {
+    public static boolean deleteUser(int userId) {
         return userController.deleteUser(userId);
     }
 
@@ -148,7 +188,7 @@ public class Api {
      * @param tourId the ID of the tour to be booked
      * @return true if the booking was successfully confirmed, otherwise false
      */
-    public boolean makeBooking(int userId, int tourId) {
+    public static boolean makeBooking(int userId, int tourId) {
         return userController.makeBooking(userId,tourId);
     }
 
@@ -158,7 +198,7 @@ public class Api {
      * @param bookingId the ID of the booking to cancel
      * @return true if the cancellation was successful, otherwise false
      */
-    public boolean cancelBooking(int bookingId) {
+    public static boolean cancelBooking(int bookingId) {
         return userController.cancelBooking(bookingId);
     }
 
@@ -168,7 +208,11 @@ public class Api {
      * @param userId the ID of the user whose bookings are to be retrieved
      * @return a List of Booking objects owned by the user
      */
-    public List<Booking> viewBookings(int userId) {
+    public static List<Booking> viewBookings(int userId) {
         return userController.viewBookings(userId);
+    }
+
+    public static Tour getTourByBookingId(int bookingId){
+        return userController.getTourByBookingId(bookingId);
     }
 }

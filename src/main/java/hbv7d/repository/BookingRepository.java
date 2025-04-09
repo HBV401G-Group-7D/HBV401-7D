@@ -2,6 +2,7 @@ package hbv7d.repository;
 
 import hbv7d.database.DBConnection;
 import hbv7d.model.Booking;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +38,7 @@ public class BookingRepository {
         String sql = "INSERT INTO Booking (tourID, userID, status) VALUES (?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            pstmt.setInt(1, booking.getTour());
+            pstmt.setInt(1, booking.getTourId());
             pstmt.setInt(2, booking.getUserId());
             pstmt.setString(3, booking.getStatus().toString());
             
@@ -54,6 +55,9 @@ public class BookingRepository {
         }
         return bookingId;
     }
+
+
+
     
     // Breytir bókun í CONFIRMED m.v. aðstæður
     public boolean confirmBooking(int bookingID) {
@@ -151,5 +155,36 @@ public class BookingRepository {
             e.printStackTrace();
         }
         return bookings;
+    }
+
+    public Booking findBookingsById(int bookingId) {
+//        List<Booking> bookings = new ArrayList<>();
+        Booking booking = null;
+        String sql = "SELECT bookingID, tourID, userID, status FROM Booking WHERE bookingID = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, bookingId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int bookingID = rs.getInt("bookingID");
+                    int tourID = rs.getInt("tourID");
+                    int userID = rs.getInt("userID");
+                    String statusStr = rs.getString("status");
+
+
+                    booking = new Booking(userID, tourID);
+                    booking.setBookingID(bookingID);
+
+
+                    Booking.BookingStatus status = Booking.BookingStatus.valueOf(statusStr);
+                    booking.setStatus(status);
+
+//                    bookings.add(booking);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return booking;
     }
 }

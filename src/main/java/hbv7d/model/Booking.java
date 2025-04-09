@@ -1,6 +1,8 @@
 package hbv7d.model;
 
 
+import hbv7d.api.Api;
+
 public class Booking {
     private int bookingID;
     private int tourID;
@@ -42,12 +44,20 @@ public class Booking {
         this.status = status;
     }
 
-    public int getTour() {
+    public int getTourId() {
         return tourID;
     }
 
-    public void setTour(int tourID) {
+    public void setTourId(int tourID) {
         this.tourID = tourID;
+    }
+
+    public String getTourName(){
+        return getTour().getName();
+    }
+
+    public Tour getTour() {
+        return Api.getTourByBookingId(bookingID);
     }
 
     public int getUserId() {
