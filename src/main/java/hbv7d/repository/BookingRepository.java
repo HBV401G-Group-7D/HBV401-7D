@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookingRepository {
 
@@ -53,19 +55,53 @@ public class BookingRepository {
         return bookingId;
     }
     
-    // Breytir bókun í CONFIRMED.
+    // Breytir bókun í CONFIRMED m.v. aðstæður
     public boolean confirmBooking(int bookingID) {
-        String sql = "UPDATE Booking SET status = 'CONFIRMED' WHERE bookingID = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, bookingID);
-            int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
+        try (Connection conn = DBConnection.getConnection()) {
+            // Sækir tourID og userID
+            String selectSql = "SELECT tourID, userID FROM Booking WHERE bookingID = ?";
+            int tourID, userID;
+            try (PreparedStatement selectPstmt = conn.prepareStatement(selectSql)) {
+                selectPstmt.setInt(1, bookingID);
+                try (ResultSet rs = selectPstmt.executeQuery()) {
+                    if (rs.next()) {
+                        tourID = rs.getInt("tourID");
+                        userID = rs.getInt("userID");
+                    } else {
+                        // Bókun ekki til
+                        return false;
+                    }
+                }
+            }
+            
+            // Sér hvort notandi sé núþegar með bókun
+            String duplicateSql = "SELECT COUNT(*) AS count FROM Booking " +
+                                  "WHERE tourID = ? AND userID = ? AND status = 'CONFIRMED' AND bookingID != ?";
+            try (PreparedStatement dupPstmt = conn.prepareStatement(duplicateSql)) {
+                dupPstmt.setInt(1, tourID);
+                dupPstmt.setInt(2, userID);
+                dupPstmt.setInt(3, bookingID);
+                try (ResultSet rs = dupPstmt.executeQuery()) {
+                    if (rs.next() && rs.getInt("count") > 0) {
+                        System.out.println("User already has a confirmed booking for this tour.");
+                        return false;
+                    }
+                }
+            }
+            
+            // Ef það er ekki núþegar bókað þá er búið til bókunina
+            String updateSql = "UPDATE Booking SET status = 'CONFIRMED' WHERE bookingID = ?";
+            try (PreparedStatement updatePstmt = conn.prepareStatement(updateSql)) {
+                updatePstmt.setInt(1, bookingID);
+                int rowsAffected = updatePstmt.executeUpdate();
+                return rowsAffected > 0;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
+    
     
     // Breytir bókun í CANCELLED.
     public boolean cancelBooking(int bookingID) {
@@ -84,5 +120,36 @@ public class BookingRepository {
     // Merkir bókun sem failed og kallar þá á cancelbooking til að merkja það sem cancelled
     public boolean bookingFailed(int bookingID) {
         return cancelBooking(bookingID);
+    }
+
+    //Skilar lista af öllum Bookings eftir UserId
+    public List<Booking> findBookingsByUserId(int userId) {
+        List<Booking> bookings = new ArrayList<>();
+        String sql = "SELECT bookingID, tourID, userID, status FROM Booking WHERE userID = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int bookingID = rs.getInt("bookingID");
+                    int tourID = rs.getInt("tourID");
+                    int userID = rs.getInt("userID");
+                    String statusStr = rs.getString("status");
+                    
+
+                    Booking booking = new Booking(userID, tourID);
+                    booking.setBookingID(bookingID);
+                    
+
+                    Booking.BookingStatus status = Booking.BookingStatus.valueOf(statusStr);
+                    booking.setStatus(status);  
+                    
+                    bookings.add(booking);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
     }
 }
