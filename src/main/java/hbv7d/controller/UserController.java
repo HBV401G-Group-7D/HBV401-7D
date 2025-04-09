@@ -93,11 +93,13 @@ public class UserController {
         // Retrieve the user and tour.
         User user = userRepository.findById(userId);
         if (user == null) {
+            System.out.println("user not found");
             return false;
         }
         
         Tour tour = tourRepository.findById(tourId); 
         if (tour == null) {
+            System.out.println("tour not found");
             return false;
         }
         

@@ -57,4 +57,8 @@ public class Company {
         toursOffered.remove(tour);
     } //deleteTour
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

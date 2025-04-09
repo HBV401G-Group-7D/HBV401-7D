@@ -105,6 +105,11 @@ public class Tour {
         seatsTaken = bookings.size();
     }
 
+    @Override
+    public String toString() {
+        return "name: " + name + " tourId: " + String.valueOf(tourId);
+    }
+
 
 
     private void updateTour(){

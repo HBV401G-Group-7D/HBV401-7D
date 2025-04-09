@@ -1,12 +1,13 @@
 package hbv7d.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private int userId;
-    private String name;
-    private String email;
-    private List<Booking> bookings;
+    private int userId = -1; // default value
+    private String name = "default name"; // default value
+    private String email = "default email"; // default value
+    private List<Booking> bookings = new ArrayList<>(); // default value
 
     // Constructor no args
     public User(){
@@ -60,5 +61,10 @@ public class User {
 
     public void cancelBooking(Booking booking) {
         bookings.remove(booking);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

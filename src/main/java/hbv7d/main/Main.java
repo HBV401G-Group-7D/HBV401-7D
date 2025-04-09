@@ -19,7 +19,7 @@ public class Main {
         start();
     }
 
-    private static void start(){
+    public static void start(){
         //Býr til töflunnar ef þær eru ekki núþegar til
         CompanyRepository companyRepository = new CompanyRepository();
         TourRepository tourRepository = new TourRepository();
@@ -31,29 +31,34 @@ public class Main {
         tourRepository.createTourTable();
         userRepository.createUserTable();
 
-        CompanyController companyController = new CompanyController(companyRepository,tourRepository);
-        UserController userController = new UserController();
-        Company company1 = new Company(1, "company1");
-        companyController.createCompany(company1);
-//        Company company1 = companyController.getCompany(1);
-        Tour tour = new Tour(
-                1,
-                "Tour 1",
-                "this is description",
-                "this is a location",
-                20,
-                new Date(),
-                20,
-                32,
-                "this is a difficultyRating",
-                "this is a type",
-                false,
-                company1
-        );
-        companyController.addTour(1,tour);
+        Api.companyRepository = companyRepository;
+        Api.tourRepository = tourRepository;
+        Api.userRepository = userRepository;
+        Api.bookingRepository = bookingRepository;
 
-
-        System.out.println(tour.getSeatsTaken());
+//        CompanyController companyController = new CompanyController(companyRepository,tourRepository);
+//        UserController userController = new UserController();
+//        Company company1 = new Company(1, "company1");
+//        companyController.createCompany(company1);
+////        Company company1 = companyController.getCompany(1);
+//        Tour tour = new Tour(
+//                1,
+//                "Tour 1",
+//                "this is description",
+//                "this is a location",
+//                20,
+//                new Date(),
+//                20,
+//                32,
+//                "this is a difficultyRating",
+//                "this is a type",
+//                false,
+//                company1
+//        );
+//        companyController.addTour(1,tour);
+//
+//
+//        System.out.println(tour.getSeatsTaken());
 
 
 

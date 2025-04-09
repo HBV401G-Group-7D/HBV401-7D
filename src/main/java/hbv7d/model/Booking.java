@@ -65,4 +65,9 @@ public class Booking {
     public void setBookingID(int bookingID) {
         this.bookingID = bookingID;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(tourID);
+    }
 }
