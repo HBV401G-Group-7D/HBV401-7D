@@ -18,7 +18,7 @@ public class Tour {
     private boolean pickupService;
     private List<Booking> bookings;
     private Company host;
-    private int seatsTaken;
+    private int seatsTaken = 0;
 
 
     //CONSTRUCTOR
@@ -92,10 +92,13 @@ public class Tour {
         return false;
     }
 
-    public int getSteatsTaken(){
+    public int getSeatsTaken(){
         return seatsTaken;
     }
 
+    public void setSeatsTaken(int seatsTaken) {
+        this.seatsTaken = seatsTaken;
+    }
 
     private void cancelReservation(Booking booking){
         bookings.remove(booking);
