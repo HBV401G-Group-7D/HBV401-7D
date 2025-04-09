@@ -18,6 +18,7 @@ public class Tour {
     private boolean pickupService;
     private List<Booking> bookings;
     private Company host;
+    private int seatsTaken;
 
 
     //CONSTRUCTOR
@@ -85,14 +86,20 @@ public class Tour {
     public boolean reserveSeat(Booking booking) {
         if (bookings.size() < groupSize){
             bookings.add(booking);
+            seatsTaken = bookings.size();
             return true;
         }
         return false;
     }
 
+    public int getSteatsTaken(){
+        return seatsTaken;
+    }
+
 
     private void cancelReservation(Booking booking){
         bookings.remove(booking);
+        seatsTaken = bookings.size();
     }
 
 
