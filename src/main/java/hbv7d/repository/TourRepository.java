@@ -132,6 +132,35 @@ public class TourRepository {
         return tour;
     }
 
+     
+    public List<Tour> findAllTours() {
+        List<Tour> tours = new ArrayList<>();
+        String sql = "SELECT tourId, name, description, location, price, date, duration, groupSize, difficultyRating, type, pickupService, companyId FROM Tour";
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                int id = rs.getInt("tourId");
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                String location = rs.getString("location");
+                int price = rs.getInt("price");
+                Date date = new Date(rs.getDate("date").getTime());
+                int duration = rs.getInt("duration");
+                int groupSize = rs.getInt("groupSize");
+                String difficultyRating = rs.getString("difficultyRating");
+                String type = rs.getString("type");
+                boolean pickupService = rs.getBoolean("pickupService");
+                Tour tour = new Tour(id, name, description, location, price, date, duration, groupSize, difficultyRating, type, pickupService, null);
+                tours.add(tour);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tours;
+    }
+
+
 
 }
 

@@ -99,4 +99,14 @@ public class CompanyController {
     public List<Tour> viewCompanyTours(int companyId) {
         return tourRepository.findByCompanyId(companyId);
     }
+
+
+        /**
+     * Retrieves a list of all tours available in the database.
+     *
+     * @return a List of Tour objects representing all available tours.
+     */
+    public List<Tour> viewAllATours() {
+        return tourRepository.findAllTours();
+    }
 }
